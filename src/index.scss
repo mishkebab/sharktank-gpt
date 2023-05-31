@@ -149,15 +149,70 @@ form button {
 }
 
 
-#continue1 {
+#playButton {
     top: 450px;
     left: 700px;
     background-color: greenyellow;
 }
 
+h1.page3 {
+    top: 0px;
+    left: 50px;
+    position: absolute;
+    z-index: 1;
+    font-size: 120px;
+    font-weight: bold;
+    color: white;
+    // text-transform: uppercase; /* Convert text to all capitals */
+    letter-spacing: 2px; /* Adjust letter spacing as desired */
+    text-shadow: 0 0 5px #39ff14, 0 0 10px #39ff14, 0 0 20px #39ff14, 0 0 30px #39ff14; /* Neon glow effect */
+    display: none;
+}
+
+#submitted-pitch {
+    position: absolute;
+    padding: 10px;
+    top: 230px; /* Adjust the top position as needed */
+    left: 80px; /* Adjust the left position as needed */
+    width: 500px; /* Adjust the width as needed */
+    height: 430px; /* Adjust the height as needed */
+    display: none;
+    font-size: 24px;
+    background-color: transparent;
+    border: solid 1px;
+    border-color: white;
+    font-family: Verdana, Geneva, Tahoma, sans-serif
+}
+
+.loading-container {
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+  position: absolute;
+  left: 800px; 
+  top: 400px;
+  height: 200px;
+}
+
+.loading-circle {
+  width: 80px;
+  height: 80px;
+  border: 4px solid #00ff00; /* Green color */
+  border-top-color: #ff69b4; /* Hot pink color */
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
 #elon-answer {
     position: absolute;
-    top: 350px; /* Adjust the top position as needed */
+    top: 300px; /* Adjust the top position as needed */
     left: 80px; /* Adjust the left position as needed */
     width: 250px; /* Adjust the width as needed */
     height: 430px; /* Adjust the height as needed */
@@ -173,7 +228,7 @@ textarea::placeholder {
 
 #beyonce-answer {
     position: absolute;
-    top: 350px; /* Adjust the top position as needed */
+    top: 300px; /* Adjust the top position as needed */
     left: 400px; /* Adjust the left position as needed */
     width: 250px; /* Adjust the width as needed */
     height: 430px; /* Adjust the height as needed */
@@ -182,3 +237,40 @@ textarea::placeholder {
     background-color: transparent;
     border: solid 10px;
 }
+
+#warren-answer {
+    position: absolute;
+    top: 300px; /* Adjust the top position as needed */
+    left: 710px; /* Adjust the left position as needed */
+    width: 250px; /* Adjust the width as needed */
+    height: 430px; /* Adjust the height as needed */
+    display: none;
+    font-size: 16px;
+    background-color: transparent;
+    border: solid 10px;
+}
+
+#mark-answer {
+    position: absolute;
+    top: 300px; /* Adjust the top position as needed */
+    left: 1100px; /* Adjust the left position as needed */
+    width: 250px; /* Adjust the width as needed */
+    height: 430px; /* Adjust the height as needed */
+    display: none;
+    font-size: 16px;
+    background-color: transparent;
+    border: solid 10px;
+}
+
+#serena-answer {
+    position: absolute;
+    top: 300px; /* Adjust the top position as needed */
+    left: 1400px; /* Adjust the left position as needed */
+    width: 250px; /* Adjust the width as needed */
+    height: 430px; /* Adjust the height as needed */
+    display: none;
+    font-size: 16px;
+    background-color: transparent;
+    border: solid 10px;
+}
+

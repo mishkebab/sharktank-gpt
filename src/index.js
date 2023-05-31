@@ -13,16 +13,16 @@ function renderScreen1() {
   ctx.fillStyle = "black";
   ctx.fillRect(0, 0, 1839, 800);
 
-  function drawSharks() {
-    const sharks = document.getElementsByClassName("shark");
-    for (let i = 0; i < sharks.length; i++) {
-      const shark = sharks[i];
-      const rect = shark.getBoundingClientRect();
-      ctx.drawImage(shark, rect.left, rect.top, rect.width, rect.height);
-    }
-  }  
+  // function drawSharks() {
+  //   const sharks = document.getElementsByClassName("shark");
+  //   for (let i = 0; i < sharks.length; i++) {
+  //     const shark = sharks[i];
+  //     const rect = shark.getBoundingClientRect();
+  //     ctx.drawImage(shark, rect.left, rect.top, rect.width, rect.height);
+  //   }
+  // }  
 
-  drawSharks();
+  // drawSharks();
 
   const elements = document.getElementsByClassName("page1")
   for (let i = 0; i < elements.length; i++) {
@@ -124,50 +124,31 @@ function renderScreen3(pitch, category) {
   ctx.fillStyle = "black";
   ctx.fillRect(0, 0, 1839, 800);
 
-  ctx.font = "48px arial"
-  ctx.fillStyle = "white"
-  ctx.fillText("Your Pitch:", 500, 100)
+  const elements = document.getElementsByClassName("page3")
+  for (let i = 0; i < elements.length; i++) {
+    const element = elements[i];
+    console.log(element)
+    element.style.display = "block"
+  }
+
+  const musicPlayer = document.getElementById('musicPlayer');
+
+  function playMusic() {
+    musicPlayer.play();
+  }
+
+  function pauseMusic() {
+    musicPlayer.pause();
+  }
+
+  document.getElementById("playButton").addEventListener("click", playMusic)
+  document.getElementById("pauseButton").addEventListener("click", pauseMusic)
 
   // text
-  const textBox = {
-    text: pitch,
-    fontSize: 24,
-    fontFamily: "Arial",
-    x: 400,
-    y: 150,
-    maxWidth: 600,
-    lineHeight: 30,
-  };
-
-  function wrapText(text, x, y, maxWidth, lineHeight) {
-    var words = text.split(" ");
-    var line = "";
-  
-    for (var i = 0; i < words.length; i++) {
-      var testLine = line + words[i] + " ";
-      var metrics = ctx.measureText(testLine);
-      var testWidth = metrics.width;
-  
-      if (testWidth > maxWidth && i > 0) {
-        ctx.fillText(line, x, y);
-        line = words[i] + " ";
-        y += lineHeight;
-      } else {
-        line = testLine;
-      }
-    }
-  
-    ctx.fillText(line, x, y);
-  }
-
-  function drawTextBox() {
-    ctx.font = `${textBox.fontSize}px ${textBox.fontFamily}`;
-    ctx.textAlign = "center";
-    ctx.fillStyle = "white"; // Set text color
-    wrapText(textBox.text, textBox.x, textBox.y, textBox.maxWidth, textBox.lineHeight);
-  }
-
-  drawTextBox();
+  const submittedPitch = document.getElementById("submitted-pitch")
+  submittedPitch.placeholder = pitch;
+  // submittedPitch.style.borderColor = "red"
+  // submittedPitch.style.borderColor = "green"
   
   const configuration = new Configuration({
     apiKey: OPENAI_API_KEY
@@ -176,8 +157,17 @@ function renderScreen3(pitch, category) {
   delete configuration.baseOptions.headers['User-Agent'];
   
   const openai = new OpenAIApi(configuration)
+
+  let auto_pitch;
+
+  if (category === "consumer") {
+    auto_pitch = "sustainable footwear made from premium natural materials, designed for everyday wear";
+  } else {
+    auto_pitch = "enterprise thingy";
+  }
   
-  let GPT_response = async (judge, auto_pitch) => {
+  let GPT_response = async (judge) => {
+    console.log(auto_pitch)
     const GPT35TurboMessage = [
       { role: "system", content: `Pretend that you are ${judge} and you are deciding between two startups to invest in` },
       {
@@ -202,7 +192,7 @@ function renderScreen3(pitch, category) {
     return gpt_response;
   };
 
-  let GPT_score = async (judge, auto_pitch, tweet) => {
+  let GPT_score = async (judge, tweet) => {
     const GPT35TurboMessage = [
       { role: "system", content: `Pretend that you are ${judge} and you are deciding between two startups to invest in` },
       {
@@ -211,11 +201,7 @@ function renderScreen3(pitch, category) {
       },
       {
         role: "system",
-        content: `The first pitch is this: ${auto_pitch} . Please wait for the second pitch and then decide which one you like better`,
-      },
-      {
-        role: "system",
-        content: `The second pitch is this: ${pitch} . Here was the response you already generated: ${tweet}. Based on this pre-written response, if you liked the first pitch the best, only print the number 1. If it was the second pitch, only print the number 2. Don't print any other text, just the number indicating your choice.`,
+        content: `The first pitch is this: ${auto_pitch}. The second pitch is this: ${pitch} . Here is your response: ${tweet}. Based on this pre-written response, if you decided to invest in the first pitch, only print the number 1. If you decided to invest in the second pitch, only print the number 2. Don't print any other text, just the number indicating your choice.`,
       }];
 
     const response = await openai.createChatCompletion({
@@ -231,37 +217,41 @@ function renderScreen3(pitch, category) {
   let elon_score;
   let beyonce;
   let beyonce_score;
+  let warren;
+  let warren_score;
+  let mark;
+  let mark_score;
+  let serena;
+  let serena_score;
   
   async function allFiveJudges() {
     ctx.font = "20px Arial"
     ctx.fillStyle = "white"
     ctx.fillText("The sharks are debating...", 1100, 300)
 
-    elon = await GPT_response("Elon Musk", "sustainable footwear made from premium natural materials, designed for everyday wear");
-    console.log(elon)
-    elon_score = await GPT_score("Elon Musk", "sustainable footwear made from premium natural materials, designed for everyday wear", elon) 
-    console.log(elon_score)
-    beyonce = await GPT_response("Beyonce", "sustainable footwear made from premium natural materials, designed for everyday wear");
-    console.log(beyonce)
-    beyonce_score = await GPT_score("Beyonce", "sustainable footwear made from premium natural materials, designed for everyday wear", beyonce)  
-    console.log(beyonce_score)
+    elon = await GPT_response("Elon Musk");
+    elon_score = await GPT_score("Elon Musk", elon) 
+    beyonce = await GPT_response("Beyonce");
+    beyonce_score = await GPT_score("Beyonce", beyonce)  
+    warren = await GPT_response("Warren Buffett");
+    warren_score = await GPT_score("Warren Buffett", warren)  
+    mark = await GPT_response("Mark Cuban")
+    mark_score = await GPT_score("Mark Cuban", mark)
+    serena = await GPT_response("Serena Williams")
+    serena_score = await GPT_score("Serena Williams", serena)
   }  
 
-  allFiveJudges()
-    .then(() => {
-      renderScreen4(elon, elon_score, beyonce, beyonce_score, pitch)
-  })
+  // allFiveJudges()
+  //   .then(() => {
+  //     renderScreen4(elon, elon_score, beyonce, beyonce_score, warren, warren_score, mark, mark_score, serena, serena_score, pitch)
+  // })
 
 }
 
-function renderScreen4(elon, elon_score, beyonce, beyonce_score, pitch) {
+function renderScreen4(elon, elon_score, beyonce, beyonce_score, warren, warren_score, mark, mark_score, serena, serena_score, pitch) {
   ctx.clearRect(0, 0, canvasEl.width, canvasEl.height)
   ctx.fillStyle = "black";
   ctx.fillRect(0, 0, 1839, 800);
-
-  ctx.font = "48px arial"
-  ctx.fillStyle = "white"
-  ctx.fillText("Results:", 650, 100)
 
   const elements = document.getElementsByClassName("page4")
   for (let i = 0; i < elements.length; i++) {
@@ -273,18 +263,39 @@ function renderScreen4(elon, elon_score, beyonce, beyonce_score, pitch) {
   elon_image.src = "./assets/screen4/elon-musk-png-image.png"
 
   elon_image.onload = function() {
-    ctx.drawImage(elon_image, 100, 100, 250, 250)
+    ctx.drawImage(elon_image, 100, 50, 250, 250)
   }
   
   const beyonce_image = new Image();
   beyonce_image.src = "./assets/screen4/beyonce-png-image.png"
 
   beyonce_image.onload = function() {
-    ctx.drawImage(beyonce_image, 400, 100, 250, 250)
+    ctx.drawImage(beyonce_image, 400, 50, 250, 250)
+  }
+
+  const warren_image = new Image();
+  warren_image.src = "./assets/screen4/warren-png-image.png"
+
+  warren_image.onload = function() {
+    ctx.drawImage(warren_image, 750, 50, 230, 230)
+  }
+
+  const mark_image = new Image();
+  mark_image.src = "./assets/screen4/mark-cuban-png.png"
+
+  mark_image.onload = function() {
+    ctx.drawImage(mark_image, 1100, 50, 300, 230)
+  }
+
+  const serena_image = new Image();
+  serena_image.src = "./assets/screen4/serena-williams-png.png"
+
+  serena_image.onload = function() {
+    ctx.drawImage(serena_image, 1400, 0, 300, 370)
   }
 
   const textElon = document.getElementById("elon-answer")
-  textElon.placeholder = elon
+  textElon.placeholder = `@elonmusk: ${elon}`
   if (elon_score === "1") {
     textElon.style.borderColor = "red"
   } else {
@@ -292,21 +303,42 @@ function renderScreen4(elon, elon_score, beyonce, beyonce_score, pitch) {
   }
 
   const textBeyonce = document.getElementById("beyonce-answer")
-  textBeyonce.placeholder = beyonce
+  textBeyonce.placeholder = `@beyonce: ${beyonce}`
   if (beyonce_score === "1") {
     textBeyonce.style.borderColor = "red"
   } else {
     textBeyonce.style.borderColor = "green"
   }
 
+  const textWarren = document.getElementById("warren-answer")
+  textWarren.placeholder = `@warrenbuffett: ${warren}`
+  if (warren_score === "1") {
+    textWarren.style.borderColor = "red"
+  } else {
+    textWarren.style.borderColor = "green"
+  }
 
-  // console.log(elon)
-  // console.log(beyonce)
+  const textMark = document.getElementById("mark-answer")
+  textMark.placeholder = `@markcuban: ${mark}`
+  if (mark_score === "1") {
+    textMark.style.borderColor = "red"
+  } else {
+    textMark.style.borderColor = "green"
+  }
+
+  const textSerena = document.getElementById("serena-answer")
+  textSerena.placeholder = `@serenawilliams: ${serena}`
+  if (serena_score === "1") {
+    textSerena.style.borderColor = "red"
+  } else {
+    textSerena.style.borderColor = "green"
+  }
+
 }
   
-renderScreen1();
+// renderScreen1();
 // renderScreen4("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.", "1", "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.", "2");
-
+renderScreen3("sdfsd","sdfsd");
 
 
 
