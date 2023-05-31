@@ -13,12 +13,16 @@ function renderScreen1() {
   ctx.fillStyle = "black";
   ctx.fillRect(0, 0, 1839, 800);
 
-  // text
-  ctx.font = "48px arial"
-  ctx.fillStyle = "white"
-  // ctx.textAlign = "center"
-  ctx.fillText("SharkGPT Screen 1", 650, 100)
-  // ctx.fillText(gpt_response, 800, 300)
+  function drawSharks() {
+    const sharks = document.getElementsByClassName("shark");
+    for (let i = 0; i < sharks.length; i++) {
+      const shark = sharks[i];
+      const rect = shark.getBoundingClientRect();
+      ctx.drawImage(shark, rect.left, rect.top, rect.width, rect.height);
+    }
+  }  
+
+  drawSharks();
 
   const elements = document.getElementsByClassName("page1")
   for (let i = 0; i < elements.length; i++) {
@@ -48,16 +52,19 @@ function renderScreen1() {
 function renderScreen2(category) {
   ctx.clearRect(0, 0, canvasEl.width, canvasEl.height)
 
+  const elements = document.getElementsByClassName("page2")
+  for (let i = 0; i < elements.length; i++) {
+    const element = elements[i];
+    console.log(element)
+    element.style.display = "block"
+  }
+  const spanElement = document.getElementById("span-category")
+  spanElement.textContent = category;
+
   const form = document.getElementById("user-pitch")
   form.style.display = "block"
   let submitTimeout;
-  let remainingTime = 5;
-
-  // let formTimeout = setTimeout(function() {
-  //     const pitch1 = document.getElementById("pitch").value
-  //     form.style.display = "none"
-  //     renderScreen3(pitch1);
-  // }, remainingTime * 1000);
+  let remainingTime = 60;
 
   function updateCanvas() {
     
@@ -65,16 +72,10 @@ function renderScreen2(category) {
     
     ctx.fillStyle = "black";
     ctx.fillRect(0, 0, 1839, 800);
-    
-    ctx.font = "48px arial"
-    ctx.fillStyle = "white"
-    // ctx.textAlign = "center"
-    ctx.fillText(`${category}`, 650, 100)
-
 
     ctx.font = "24px arial"
     ctx.fillStyle = "white"
-    ctx.fillText("Remaining Time: " + remainingTime + " seconds", 1000, 400);
+    ctx.fillText("Remaining Time: " + remainingTime + " seconds", 1300, 400);
 
   }
   updateCanvas();
@@ -87,6 +88,10 @@ function renderScreen2(category) {
       clearInterval(intervalId); // Stop the interval
       const pitch1 = document.getElementById("pitch").value
       form.style.display = "none"
+      for (let i = 0; i < elements.length; i++) {
+        const element = elements[i];
+        element.style.display = "none"
+      }
       renderScreen3(pitch1);
     } else {
       updateCanvas();
@@ -100,6 +105,10 @@ function renderScreen2(category) {
     clearInterval(intervalId);
     const pitch1 = document.getElementById("pitch").value
     form.style.display = "none"
+    for (let i = 0; i < elements.length; i++) {
+      const element = elements[i];
+      element.style.display = "none"
+    }
     renderScreen3(pitch1, category);
   });
 
@@ -117,7 +126,7 @@ function renderScreen3(pitch, category) {
 
   ctx.font = "48px arial"
   ctx.fillStyle = "white"
-  ctx.fillText("Your Pitch:", 650, 100)
+  ctx.fillText("Your Pitch:", 500, 100)
 
   // text
   const textBox = {
@@ -168,8 +177,6 @@ function renderScreen3(pitch, category) {
   
   const openai = new OpenAIApi(configuration)
   
-  let count = 0;
-
   let GPT_response = async (judge, auto_pitch) => {
     const GPT35TurboMessage = [
       { role: "system", content: `Pretend that you are ${judge} and you are deciding between two startups to invest in` },
@@ -183,7 +190,32 @@ function renderScreen3(pitch, category) {
       },
       {
         role: "system",
-        content: `The second pitch is this: ${pitch} . Now please decide which pitch you liked better.`,
+        content: `The second pitch is this: ${pitch} . Now please decide which pitch you liked better and write a summary of your decision as a tweet.`,
+      }];
+
+    const response = await openai.createChatCompletion({
+      model: "gpt-3.5-turbo",
+      messages: GPT35TurboMessage,
+    });
+  
+    const gpt_response = response.data.choices[0].message.content;
+    return gpt_response;
+  };
+
+  let GPT_score = async (judge, auto_pitch, tweet) => {
+    const GPT35TurboMessage = [
+      { role: "system", content: `Pretend that you are ${judge} and you are deciding between two startups to invest in` },
+      {
+        role: "system",
+        content: `The pitches from both startups will be in the ${category} space`,
+      },
+      {
+        role: "system",
+        content: `The first pitch is this: ${auto_pitch} . Please wait for the second pitch and then decide which one you like better`,
+      },
+      {
+        role: "system",
+        content: `The second pitch is this: ${pitch} . Here was the response you already generated: ${tweet}. Based on this pre-written response, if you liked the first pitch the best, only print the number 1. If it was the second pitch, only print the number 2. Don't print any other text, just the number indicating your choice.`,
       }];
 
     const response = await openai.createChatCompletion({
@@ -196,31 +228,84 @@ function renderScreen3(pitch, category) {
   };
 
   let elon;
+  let elon_score;
   let beyonce;
+  let beyonce_score;
   
   async function allFiveJudges() {
-    elon = await GPT_response("Elon Musk", "to solve climate change, I would create an artificial meat company");
-    beyonce = await GPT_response("Beyonce", "to solve climate change, I would create an artificial meat company");
-  }
-  
+    ctx.font = "20px Arial"
+    ctx.fillStyle = "white"
+    ctx.fillText("The sharks are debating...", 1100, 300)
+
+    elon = await GPT_response("Elon Musk", "sustainable footwear made from premium natural materials, designed for everyday wear");
+    console.log(elon)
+    elon_score = await GPT_score("Elon Musk", "sustainable footwear made from premium natural materials, designed for everyday wear", elon) 
+    console.log(elon_score)
+    beyonce = await GPT_response("Beyonce", "sustainable footwear made from premium natural materials, designed for everyday wear");
+    console.log(beyonce)
+    beyonce_score = await GPT_score("Beyonce", "sustainable footwear made from premium natural materials, designed for everyday wear", beyonce)  
+    console.log(beyonce_score)
+  }  
 
   allFiveJudges()
     .then(() => {
-      console.log("hello")
-      console.log(elon)
-      console.log("hello")
-      console.log(beyonce)
+      renderScreen4(elon, elon_score, beyonce, beyonce_score, pitch)
   })
-  // gpt_response = ("### I'm GPT-3.5-TURBO. ####", await GPT35Turbo(GPT35TurboMessage));
 
-  // console.log(gpt_response)
+}
+
+function renderScreen4(elon, elon_score, beyonce, beyonce_score, pitch) {
+  ctx.clearRect(0, 0, canvasEl.width, canvasEl.height)
+  ctx.fillStyle = "black";
+  ctx.fillRect(0, 0, 1839, 800);
+
+  ctx.font = "48px arial"
+  ctx.fillStyle = "white"
+  ctx.fillText("Results:", 650, 100)
+
+  const elements = document.getElementsByClassName("page4")
+  for (let i = 0; i < elements.length; i++) {
+    const element = elements[i];
+    element.style.display = "block"
+  }
+
+  const elon_image = new Image();
+  elon_image.src = "./assets/screen4/elon-musk-png-image.png"
+
+  elon_image.onload = function() {
+    ctx.drawImage(elon_image, 100, 100, 250, 250)
+  }
   
-//   console.log(judge)
-//   console.log(category)
-//   console.log(pitch)
+  const beyonce_image = new Image();
+  beyonce_image.src = "./assets/screen4/beyonce-png-image.png"
+
+  beyonce_image.onload = function() {
+    ctx.drawImage(beyonce_image, 400, 100, 250, 250)
+  }
+
+  const textElon = document.getElementById("elon-answer")
+  textElon.placeholder = elon
+  if (elon_score === "1") {
+    textElon.style.borderColor = "red"
+  } else {
+    textElon.style.borderColor = "green"
+  }
+
+  const textBeyonce = document.getElementById("beyonce-answer")
+  textBeyonce.placeholder = beyonce
+  if (beyonce_score === "1") {
+    textBeyonce.style.borderColor = "red"
+  } else {
+    textBeyonce.style.borderColor = "green"
+  }
+
+
+  // console.log(elon)
+  // console.log(beyonce)
 }
   
 renderScreen1();
+// renderScreen4("Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.", "1", "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.", "2");
 
 
 

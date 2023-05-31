@@ -14,13 +14,20 @@
   <body>
     <div id="container">
         <canvas id="game-canvas" width=1839 height=1205></canvas>
+        <img src="assets/screen1/shark.png" alt="Shark" class="shark">
+        <h1 class="page1">SharkGPT</h1>
+        <h3 class="page1">Pitch your startup idea to our panel of rich & powerful investors. <br> In the other room, there is another startup waiting to pitch to the same VCs. <br> Can you come up with a better idea? <br> The prize at stake: a $10M Series A investment that will launch you on the gloried path to becoming a billion dollar unicorn company. </h3>
         <button id="consumer" class="page1">Consumer</button>
         <button id="enterprise" class="page1">Enterprise</button>
-        <button id="continue1" class="page2">Continue</button>
-        <form id="user-pitch" class="page3">
-            <textarea id="pitch" name="pitch"></textarea>
-            <input type="submit" value="submit">
+        <h2 id="page2header" class="page2">Pitch us your best <span class="span-category" class="page2" id="span-category"></span> idea and prepare to enter the  <span class="span-category" class="page2">tank</span></h2>
+        <form id="user-pitch">
+            <h2>Your idea goes here</h2>
+            <textarea id="pitch" name="pitch" value="Type your idea here"></textarea>
+            <button type="submit" value="submit">Let's do this</button>
         </form>
+        <textarea class="page4" id="elon-answer" placeholder="Enter text"></textarea>
+        <textarea class="page4" id="beyonce-answer" placeholder="Enter text"></textarea>
+
     </div>
   </body>
 
