@@ -14,7 +14,7 @@
 
 h1 {
     top: 50px;
-    left: 630px;
+    left: 650px;
     position: absolute;
     z-index: 1;
     font-size: 120px;
@@ -29,12 +29,15 @@ h1 {
 h3 {
     position: absolute;
     z-index: 1;
-    top: 300px;
-    left: 650px;
-    width: 500px;
+    top: 260px;
+    left: 425px;
+    width: 1000px;
     color: white;
     text-align: center;
     display: none;
+    line-height: 50px;
+    font-size: 30px;
+
 }
 
 #consumer {
@@ -50,8 +53,8 @@ h3 {
     text-decoration: none;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4);
     transition: background-color 0.3s ease-in-out;
-    font-family: Verdana, Geneva, Tahoma, sans-serif
-
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    cursor: pointer;
 }
 
 #enterprise {
@@ -68,7 +71,7 @@ h3 {
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4);
     transition: background-color 0.3s ease-in-out;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-
+    cursor: pointer;
 }
 
 .shark {
@@ -138,7 +141,7 @@ form textarea {
 
 form button {
     display: block;
-    width: 100%;
+    width: 104%;
     padding: 10px;
     border: none;
     border-radius: 4px;
@@ -150,10 +153,32 @@ form button {
 
 
 #playButton {
-    top: 450px;
-    left: 700px;
-    background-color: greenyellow;
+    top: 10px;
+    left: 1750px;
+    background-color: hotpink;
+    border-radius: 50%;
+    border-width: 0px;
+    // border-color: hotpink;
+    // cursor: pointer;
+    width: 75px;
+    height: 75px;
+
+    font-weight: 900;
+    font-size: 24px;
+    color: white;
 }
+
+// .playButton::before {
+//     content: "\f04b"; /* Unicode for play icon (FontAwesome) */
+//     font-family: "Font Awesome 5 Free";
+//     font-weight: 900;
+//     font-size: 24px;
+//     color: white;
+// }
+
+// .playButton.paused::before {
+// content: "\f04c"; /* Unicode for pause icon (FontAwesome) */
+// }
 
 h1.page3 {
     top: 0px;
@@ -184,23 +209,18 @@ h1.page3 {
     font-family: Verdana, Geneva, Tahoma, sans-serif
 }
 
-.loading-container {
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-  position: absolute;
-  left: 800px; 
-  top: 400px;
-  height: 200px;
-}
-
-.loading-circle {
-  width: 80px;
-  height: 80px;
-  border: 4px solid #00ff00; /* Green color */
-  border-top-color: #ff69b4; /* Hot pink color */
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
+#loading-circle {
+    z-index: 1;
+    position: absolute;
+    left: 1150px; 
+    top: 500px;
+    width: 80px;
+    height: 80px;
+    border: 4px solid #00ff00; /* Green color */
+    border-top-color: #ff69b4; /* Hot pink color */
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    display: none;
 }
 
 @keyframes spin {
@@ -209,21 +229,34 @@ h1.page3 {
   }
 }
 
+h2.page3 {
+    top: 300px;
+    left: 750px;
+    position: absolute;
+    z-index: 1;
+    font-size: 80px;
+    font-weight: bold;
+    color: white;
+    // text-transform: uppercase; /* Convert text to all capitals */
+    letter-spacing: 2px; /* Adjust letter spacing as desired */
+    text-shadow: 0 0 5px #ff69b4, 0 0 10px #ff69b4, 0 0 20px #ff69b4, 0 0 30px #39ff14; /* Neon glow effect */
+    display: none;
+}
+
+textarea::placeholder {
+    color: white;
+}
 
 #elon-answer {
     position: absolute;
     top: 300px; /* Adjust the top position as needed */
     left: 80px; /* Adjust the left position as needed */
     width: 250px; /* Adjust the width as needed */
-    height: 430px; /* Adjust the height as needed */
+    height: 250px; /* Adjust the height as needed */
     display: none;
     font-size: 16px;
     background-color: transparent;
     border: solid 10px;
-}
-
-textarea::placeholder {
-    color: white;
 }
 
 #beyonce-answer {
@@ -231,7 +264,7 @@ textarea::placeholder {
     top: 300px; /* Adjust the top position as needed */
     left: 400px; /* Adjust the left position as needed */
     width: 250px; /* Adjust the width as needed */
-    height: 430px; /* Adjust the height as needed */
+    height: 250px; /* Adjust the height as needed */
     display: none;
     font-size: 16px;
     background-color: transparent;
@@ -241,9 +274,9 @@ textarea::placeholder {
 #warren-answer {
     position: absolute;
     top: 300px; /* Adjust the top position as needed */
-    left: 710px; /* Adjust the left position as needed */
+    left: 750px; /* Adjust the left position as needed */
     width: 250px; /* Adjust the width as needed */
-    height: 430px; /* Adjust the height as needed */
+    height: 250px; /* Adjust the height as needed */
     display: none;
     font-size: 16px;
     background-color: transparent;
@@ -255,7 +288,7 @@ textarea::placeholder {
     top: 300px; /* Adjust the top position as needed */
     left: 1100px; /* Adjust the left position as needed */
     width: 250px; /* Adjust the width as needed */
-    height: 430px; /* Adjust the height as needed */
+    height: 250px; /* Adjust the height as needed */
     display: none;
     font-size: 16px;
     background-color: transparent;
@@ -267,10 +300,31 @@ textarea::placeholder {
     top: 300px; /* Adjust the top position as needed */
     left: 1400px; /* Adjust the left position as needed */
     width: 250px; /* Adjust the width as needed */
-    height: 430px; /* Adjust the height as needed */
+    height: 250px; /* Adjust the height as needed */
     display: none;
     font-size: 16px;
     background-color: transparent;
     border: solid 10px;
 }
 
+#congrats-heading {
+    top: 600px;
+    left: 275px;
+    position: absolute;
+    z-index: 1;
+    color: white;
+    display: none;
+    font-size: 50px;
+}
+
+#sorry-heading {
+    top: 600px;
+    left: 275px;
+    position: absolute;
+    z-index: 1;
+    color: white;
+    display: none;
+    font-size: 50px;
+    text-shadow: 0 0 5px hotpink, 0 0 10px hotpink, 0 0 20px hotpink, 0 0 30px hotpink; /* Neon glow effect */
+
+}

@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <link rel="stylesheet" href="./src/styles/reset.scss" />
     <link rel="stylesheet" href="./dist/main.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha384-...your-sha384-hash... " crossorigin="anonymous">
     <script src="./dist/main.js" defer></script>
     <title>SharkGPT</title>
   </head>
@@ -14,7 +15,7 @@
   <body>
     <div id="container">
         <canvas id="game-canvas" width=1839 height=1205></canvas>
-        <img src="assets/screen1/shark.png" alt="Shark" class="shark">
+        <!-- <img src="assets/screen1/shark.png" alt="Shark" class="shark"> -->
         <h1 class="page1">SharkGPT</h1>
         <h3 class="page1">Pitch your startup idea to our panel of rich & powerful investors. <br> In the other room, there is another startup waiting to pitch to the same VCs. <br> Can you come up with a better idea? <br> The prize at stake: a $10M Series A investment that will launch you on the gloried path to becoming a billion dollar unicorn company. </h3>
         <button id="consumer" class="page1">Consumer</button>
@@ -26,19 +27,21 @@
             <button type="submit" value="submit">Let's do this</button>
         </form>
         <audio id="musicPlayer" src="assets/screen3/shark-tank-remix.mp3" class="page3"></audio>
-        <button class="page3" id="playButton">Play</button>
-        <button class="page3" id="pauseButton">Pause</button>
+        <button class="page3" id="playButton">
+          <i class="fas fa-play"></i>
+          <i class="fas fa-pause"></i>
+        </button>
+        <div class="page3" id="loading-circle"></div>
         <h1 class="page3">Your Pitch</h1>
-        <div class="loading-container">
-          <div class="loading-circle"></div>
-        </div>
+        <h2 class="page3">The sharks are debating...</h1>
         <textarea class="page3" id="submitted-pitch" placeholder="Enter text"></textarea>
         <textarea class="page4" id="elon-answer" placeholder="Enter text"></textarea>
         <textarea class="page4" id="beyonce-answer" placeholder="Enter text"></textarea>
         <textarea class="page4" id="warren-answer" placeholder="Enter text"></textarea>
         <textarea class="page4" id="mark-answer" placeholder="Enter text"></textarea>
         <textarea class="page4" id="serena-answer" placeholder="Enter text"></textarea>
-
+        <h1 id="congrats-heading">Congrats! Your startup wins the $10M investment!</h1>
+        <h1 id="sorry-heading">Sorry, the other startup won the $10M investment</h1>
 
     </div>
   </body>
